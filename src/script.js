@@ -2,10 +2,6 @@
 // Ensure to include Material Icons in your HTML: 
 // <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-// Uncomment this line if you have environment variables set up in your project
-// let env = import.meta.env;
-// console.log(env);
-
 // File data
 const files = [
     { icon: 'description', name: 'Spreadsheet.xlsx', color: 'text-green-600', type: 'Excel', size: '1.2 MB' },
@@ -27,22 +23,25 @@ function createFileElement(file) {
     const div = document.createElement('div');
     div.className = 'p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer group';
     div.innerHTML = `
-        <div class="flex flex-col items-center space-y-3 ">
+        <div class="flex flex-col items-center space-y-3">
             <div class="transform group-hover:scale-110 transition-transform duration-200">
                 <span class="material-icons ${file.color} w-8 h-8">${file.icon}</span>
             </div>
             <span class="text-sm text-gray-600 text-center truncate w-full">
                 ${file.name}
             </span>
+            <span class="text-xs text-gray-400 text-center">
+                ${file.type} - ${file.size}
+            </span>
         </div>
     `;
 
-    // Add click event to update sidebar
+    // Add click event to update sidebar with file details
     div.addEventListener('click', () => updateFileDetails(file));
     return div;
 }
 
-// Function to update file details in sidebar
+// Function to update file details in the sidebar
 function updateFileDetails(file) {
     const fileDetails = document.getElementById('fileDetails');
     const date = new Date().toLocaleDateString();
@@ -54,7 +53,7 @@ function updateFileDetails(file) {
     `;
 }
 
-// Function to handle search
+// Function to handle search functionality
 function handleSearch(event) {
     const searchTerm = event.target.value.toLowerCase();
     const filteredFiles = files.filter(file =>
@@ -63,21 +62,21 @@ function handleSearch(event) {
     renderFiles(filteredFiles);
 }
 
-// Function to render files
+// Function to render files in the grid
 function renderFiles(filesToRender) {
     const fileGrid = document.getElementById('fileGrid');
-    fileGrid.innerHTML = '';
+    fileGrid.innerHTML = ''; // Clear existing files
     filesToRender.forEach(file => {
         fileGrid.appendChild(createFileElement(file));
     });
 }
 
-// Initialize
+// Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial render
+    // Initial render of files
     renderFiles(files);
 
-    // Setup search handler
+    // Set up search event listener
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', handleSearch);
 });
